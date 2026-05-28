@@ -1,5 +1,7 @@
 """End-to-end analysis workflow orchestrator."""
 
+from __future__ import annotations
+
 import sys
 import json
 import argparse

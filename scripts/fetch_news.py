@@ -1,5 +1,7 @@
 """Fetch financial news from yfinance and web sources."""
 
+from __future__ import annotations
+
 import sys
 import json
 import argparse

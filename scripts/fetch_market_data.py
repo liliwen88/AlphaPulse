@@ -1,5 +1,7 @@
 """Fetch real-time market data from yfinance."""
 
+from __future__ import annotations
+
 import sys
 import json
 import argparse
@@ -95,20 +97,20 @@ def compute_momentum(history: pd.DataFrame) -> dict[str, float]:
     }
 
 
+class MarketDataError(Exception):
+    """Raised when market data cannot be fetched."""
+
+
 def fetch_market_data(ticker: str) -> MarketSnapshot:
     """Fetch all market data from yfinance and return a structured MarketSnapshot."""
     resolved = resolve_ticker(ticker)
     stock = yf.Ticker(resolved)
 
-    try:
-        history = stock.history(period=DEFAULT_PERIOD, timeout=YFINANCE_TIMEOUT)
-    except Exception:
-        history = pd.DataFrame()
+    history = stock.history(period=DEFAULT_PERIOD, timeout=YFINANCE_TIMEOUT)
+    info = dict(stock.info) if stock.info else {}
 
-    try:
-        info = stock.info
-    except Exception:
-        info = {}
+    if history.empty and not info:
+        raise MarketDataError(f"No data returned for {resolved} — Yahoo Finance may be rate limiting or unavailable")
 
     now = datetime.now(timezone.utc)
 

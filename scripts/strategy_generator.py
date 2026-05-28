@@ -1,5 +1,7 @@
 """Generate actionable investment strategies: signal, entry, exit, stop-loss, position sizing."""
 
+from __future__ import annotations
+
 import sys
 from datetime import datetime, timezone
 from pathlib import Path

@@ -1,5 +1,7 @@
 """Calculate technical indicators: RSI, MACD, Bollinger Bands, SMA."""
 
+from __future__ import annotations
+
 import sys
 import json
 import argparse

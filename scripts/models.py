@@ -1,6 +1,7 @@
 """Pydantic v2 data models for AlphaPulse."""
 
 from datetime import datetime
+from typing import Optional, List, Dict
 from pydantic import BaseModel, Field
 
 
@@ -16,15 +17,15 @@ class MarketSnapshot(BaseModel):
     volume: int
     avg_volume: int = 0
     volume_ratio: float = 0.0
-    market_cap: float | None = None
-    pe_ratio: float | None = None
-    dividend_yield: float | None = None
+    market_cap: Optional[float] = None
+    pe_ratio: Optional[float] = None
+    dividend_yield: Optional[float] = None
     fifty_two_week_high: float = 0.0
     fifty_two_week_low: float = 0.0
     fifty_two_week_position_pct: float = 0.0
-    support_level: float | None = None
-    resistance_level: float | None = None
-    momentum: dict[str, float] = Field(default_factory=lambda: {"1d": 0.0, "1w": 0.0, "1m": 0.0, "3m": 0.0})
+    support_level: Optional[float] = None
+    resistance_level: Optional[float] = None
+    momentum: Dict[str, float] = Field(default_factory=lambda: {"1d": 0.0, "1w": 0.0, "1m": 0.0, "3m": 0.0})
     data_source: str = "yfinance"
     data_freshness: str = ""
 
@@ -36,16 +37,16 @@ class IndicatorSet(BaseModel):
     ticker: str
     timestamp: datetime
     period: str
-    rsi: float | None = None
-    macd: float | None = None
-    macd_signal: float | None = None
-    macd_histogram: float | None = None
-    bollinger_upper: float | None = None
-    bollinger_middle: float | None = None
-    bollinger_lower: float | None = None
-    sma_20: float | None = None
-    sma_50: float | None = None
-    sma_200: float | None = None
+    rsi: Optional[float] = None
+    macd: Optional[float] = None
+    macd_signal: Optional[float] = None
+    macd_histogram: Optional[float] = None
+    bollinger_upper: Optional[float] = None
+    bollinger_middle: Optional[float] = None
+    bollinger_lower: Optional[float] = None
+    sma_20: Optional[float] = None
+    sma_50: Optional[float] = None
+    sma_200: Optional[float] = None
 
 
 # ---- News ----
@@ -55,8 +56,8 @@ class NewsArticle(BaseModel):
     headline: str
     date: datetime
     source: str
-    url: str | None = None
-    summary: str | None = None
+    url: Optional[str] = None
+    summary: Optional[str] = None
     impact: str = "Neutral"
 
 
@@ -65,9 +66,9 @@ class NewsBundle(BaseModel):
     ticker: str
     fetched_at: datetime
     lookback_days: int
-    sources_attempted: list[str] = Field(default_factory=list)
-    sources_succeeded: list[str] = Field(default_factory=list)
-    articles: list[NewsArticle] = Field(default_factory=list)
+    sources_attempted: List[str] = Field(default_factory=list)
+    sources_succeeded: List[str] = Field(default_factory=list)
+    articles: List[NewsArticle] = Field(default_factory=list)
 
 
 # ---- Scoring ----
@@ -78,7 +79,7 @@ class DimensionScore(BaseModel):
     weight: float
     raw_score: float
     weighted_score: float
-    details: list[str] = Field(default_factory=list)
+    details: List[str] = Field(default_factory=list)
 
 
 class ScoreResult(BaseModel):
@@ -87,7 +88,7 @@ class ScoreResult(BaseModel):
     timestamp: datetime
     overall_score: float
     conviction: str
-    dimensions: list[DimensionScore] = Field(default_factory=list)
+    dimensions: List[DimensionScore] = Field(default_factory=list)
 
 
 # ---- Strategy ----
@@ -97,8 +98,8 @@ class StrategyResult(BaseModel):
     ticker: str
     timestamp: datetime
     signal: str
-    entry_price: float | None = None
-    take_profit: float | None = None
+    entry_price: Optional[float] = None
+    take_profit: Optional[float] = None
     stop_loss: float = 0.0
     position_size_pct: float = 5.0
     rationale: str = ""
@@ -112,10 +113,10 @@ class AnalysisReport(BaseModel):
     analysis_date: datetime
     data_freshness: str = ""
     conviction: str = ""
-    market_snapshot: MarketSnapshot | None = None
-    indicators: IndicatorSet | None = None
-    news: NewsBundle | None = None
-    score: ScoreResult | None = None
-    strategy: StrategyResult | None = None
-    chart_path: str | None = None
+    market_snapshot: Optional[MarketSnapshot] = None
+    indicators: Optional[IndicatorSet] = None
+    news: Optional[NewsBundle] = None
+    score: Optional[ScoreResult] = None
+    strategy: Optional[StrategyResult] = None
+    chart_path: Optional[str] = None
     output_dir: str = ""

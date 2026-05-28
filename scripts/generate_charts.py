@@ -1,5 +1,7 @@
 """Generate candlestick and comparison charts using mplfinance and matplotlib."""
 
+from __future__ import annotations
+
 import sys
 import argparse
 from pathlib import Path

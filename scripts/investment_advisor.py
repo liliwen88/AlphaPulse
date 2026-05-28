@@ -1,5 +1,7 @@
 """Complete investment advisor with structured markdown report generation."""
 
+from __future__ import annotations
+
 import sys
 import json
 import argparse
@@ -43,7 +45,7 @@ def generate_markdown_report(snapshot, indicators, news, score, strategy, timefr
     # Build news items
     news_items = ""
     for a in news.articles[:5]:
-        emoji = {"Positive": "🟢", "Negative": "🔴", "Neutral": "⚪"}.get(a.impact, "⚪")
+        emoji = {"Positive": "(+)", "Negative": "(-)", "Neutral": "(o)"}.get(a.impact, "(o)")
         date_str = a.date.strftime("%Y-%m-%d")
         news_items += f"1. **{date_str}**: {a.headline} — 影响: {emoji} {a.impact}\n"
     if not news_items:
@@ -67,7 +69,7 @@ def generate_markdown_report(snapshot, indicators, news, score, strategy, timefr
 
     worst_case = f"{round((strategy.stop_loss - snapshot.current_price) / snapshot.current_price * 100, 1)}%"
 
-    direction_emoji = {"BUY": "📈 看涨", "HOLD": "➡️ 中性", "SELL": "📉 看跌"}.get(strategy.signal, "➡️ 中性")
+    direction_emoji = {"BUY": "[看涨]", "HOLD": "[中性]", "SELL": "[看跌]"}.get(strategy.signal, "[中性]")
 
     # Build markdown
     md = f"""# {ticker} 投资分析报告
@@ -91,8 +93,8 @@ def generate_markdown_report(snapshot, indicators, news, score, strategy, timefr
 - **价格**: ${snapshot.current_price:.2f} ({_format_pct(snapshot.day_change_pct)} 今日)
 - **成交量**: {snapshot.volume/1e6:.1f}M (vs 均量 {_format_pct((snapshot.volume_ratio - 1) * 100)})
 - **52周区间**: ${snapshot.fifty_two_week_low:.2f} - ${snapshot.fifty_two_week_high:.2f} (当前位置: {snapshot.fifty_two_week_position_pct:.0f}%)
-- **市值**: ${snapshot.market_cap/1e9:.1f}B
-- **关键技术位**: 支撑 ${snapshot.support_level or 'N/A'} | 阻力 ${snapshot.resistance_level or 'N/A'}
+- **市值**: {f'${snapshot.market_cap/1e9:.1f}B' if snapshot.market_cap else 'N/A'}
+- **关键技术位**: 支撑 {f'${snapshot.support_level:.2f}' if snapshot.support_level else 'N/A'} | 阻力 {f'${snapshot.resistance_level:.2f}' if snapshot.resistance_level else 'N/A'}
 
 ---
 
@@ -147,8 +149,8 @@ def generate_markdown_report(snapshot, indicators, news, score, strategy, timefr
 
 **操作建议**:
 - 信号: **{strategy.signal}**
-- 入场价: ${strategy.entry_price:.2f} (若适用)
-- 止盈价: ${strategy.take_profit:.2f} (若适用)
+- 入场价: {f'${strategy.entry_price:.2f}' if strategy.entry_price else 'N/A'} (若适用)
+- 止盈价: {f'${strategy.take_profit:.2f}' if strategy.take_profit else 'N/A'} (若适用)
 - 止损价: ${strategy.stop_loss:.2f}
 - 建议仓位: {strategy.position_size_pct}%
 

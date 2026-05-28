@@ -3,6 +3,8 @@
 Weights: Technical(30%) + Fundamental(25%) + News(20%) + Sentiment(15%) + Macro(10%)
 """
 
+from __future__ import annotations
+
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
