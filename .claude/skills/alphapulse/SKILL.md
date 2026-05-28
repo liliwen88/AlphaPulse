@@ -19,8 +19,11 @@ description: 全球市场智能投资分析 (US, HK, Europe, Japan, Singapore)�
 
 所有脚本位于 `scripts/` 目录。通过 Bash 工具执行 `python scripts/<name>.py` 调用。
 
+**注意**: 优先使用 `simple_analyzer.py`，它已修复缓存问题，能在所有环境正常运行！
+
 | 脚本 | 功能 | 用法示例 |
 |------|------|---------|
+| `simple_analyzer.py` (推荐) | 简化版完整分析器 | `python scripts/simple_analyzer.py NVDA -f json` |
 | `fetch_market_data.py` | 实时行情+基本面 | `python scripts/fetch_market_data.py AAPL -o data.json` |
 | `calculate_indicators.py` | RSI/MACD/Bollinger/SMA | `python scripts/calculate_indicators.py AAPL -p 6mo -i rsi,macd,bollinger` |
 | `generate_charts.py` | K线图/对比图 | `python scripts/generate_charts.py AAPL -p 6mo -t candlestick -o chart.png` |
@@ -33,6 +36,16 @@ description: 全球市场智能投资分析 (US, HK, Europe, Japan, Singapore)�
 - `strategy_generator.py` — BUY/HOLD/SELL + 入场/止盈/止损 + 仓位建议
 
 ## 标准工作流
+
+**快速分析 (推荐)**：
+```bash
+python scripts/simple_analyzer.py <TICKER>
+```
+
+**JSON 格式输出 (适合程序化处理)**：
+```bash
+python scripts/simple_analyzer.py <TICKER> -f json
+```
 
 **快速报价**：
 ```bash
