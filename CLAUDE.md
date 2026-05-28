@@ -1,8 +1,16 @@
 # CLAUDE.md
 
-Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+## Project
+
+AlphaPulse is a real-time intelligent investment analysis tool for global markets (US, HK, Europe, Japan, Singapore), excluding China A-shares. It fetches live financial data, news, macro indicators, and social sentiment to produce multi-dimensional stock analysis reports.
+
+**Current state:** Specification/design phase. The v0.1 Python SDK was removed (3726b61) and will be rebuilt. README.md is the product specification — it defines the analysis workflow, data freshness requirements, cross-validation rules, and report templates that any implementation must follow.
+
+## Behavioral Guidelines
+
+Guidelines to reduce common LLM coding mistakes. **Tradeoff:** These bias toward caution over speed. For trivial tasks, use judgment.
 
 ## 1. Think Before Coding
 
