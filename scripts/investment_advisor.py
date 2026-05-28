@@ -15,6 +15,8 @@ from calculate_indicators import calculate_all_indicators
 from fetch_news import fetch_all_news
 from score_engine import calculate_overall_score
 from strategy_generator import generate_strategy
+from decision_card_generator import generate_decision_card
+from simple_report_generator import generate_simple_markdown_report
 from config import DEFAULT_PERIOD, DEFAULT_INDICATORS
 
 TIMEFRAME_PERIOD_MAP = {"short": "1mo", "medium": "6mo", "long": "1y"}
@@ -27,7 +29,8 @@ def gather_report_data(ticker: str, period: str, timeframe: str):
     news = fetch_all_news(ticker)
     score = calculate_overall_score(ticker.upper(), snapshot, indicators, news)
     strategy = generate_strategy(ticker.upper(), snapshot, indicators, score)
-    return snapshot, indicators, news, score, strategy
+    decision_card = generate_decision_card(ticker.upper(), snapshot, indicators, score)
+    return snapshot, indicators, news, score, strategy, decision_card
 
 
 def _format_pct(val: float) -> str:
@@ -215,10 +218,13 @@ def run_investment_advisor(
     # Map timeframe to actual period if using default
     actual_period = TIMEFRAME_PERIOD_MAP.get(timeframe, period)
 
-    snapshot, indicators, news, score, strategy = gather_report_data(ticker, actual_period, timeframe)
+    snapshot, indicators, news, score, strategy, decision_card = gather_report_data(ticker, actual_period, timeframe)
 
     if output_format == "md":
         content = generate_markdown_report(snapshot, indicators, news, score, strategy, timeframe)
+        ext = "md"
+    elif output_format == "simple":
+        content = generate_simple_markdown_report(snapshot, indicators, news, score, strategy, decision_card)
         ext = "md"
     else:
         content = generate_json_report(snapshot, indicators, news, score, strategy, timeframe)
@@ -241,7 +247,7 @@ def main():
     parser.add_argument("ticker", help="Stock ticker symbol")
     parser.add_argument("--period", "-p", default=DEFAULT_PERIOD, help="Data period (default: 6mo)")
     parser.add_argument("--timeframe", choices=["short", "medium", "long"], default="medium", help="Investment timeframe")
-    parser.add_argument("--format", "-f", choices=["json", "md"], default="json", help="Output format")
+    parser.add_argument("--format", "-f", choices=["json", "md", "simple"], default="json", help="Output format (simple=layman-friendly)")
     parser.add_argument("--output", "-o", help="Output file path")
     args = parser.parse_args()
 

@@ -1,5 +1,45 @@
 Real-time intelligent investment analysis for global markets excluding China A-shares (US, HK, Europe, Japan, Singapore stocks). Fetches live financial news, company announcements, macro data, and social sentiment. Provides multi-dimensional stock analysis, market trend tracking, and opportunity identification with cross-validated data sources. Use when analyzing international stocks, researching global markets, tracking market movements, or evaluating investment opportunities in non-China-A-share markets.
 
+---
+
+## 🆕 **Version 0.2 新功能 (2026-05-29)**
+
+### ✨ 三大升级
+
+#### 1. 📊 **投资决策卡** (Decision Card)
+清晰的买入/卖出信号、具体价格、概率评估：
+```
+📈 BUY @ $145.50 → Target: $150-170 | Stop: $140 | Win Rate: 70%
+```
+
+#### 2. 📝 **通俗易懂的简化报告**
+- 白话化术语 (RSI → "买卖热度", Support → "买入底线")
+- 彩色符号指示 (📈📉➡️)
+- 分步操作建议
+
+#### 3. 🎯 **明确的投资策略**
+- BUY/SELL/HOLD 信号
+- 入场价、止损、止盈价格
+- 上升/下降/盘整的概率
+- 关键看点和风险
+
+### 🚀 快速使用
+
+```bash
+# 生成简化版报告（推荐！）
+python scripts/investment_advisor.py AAPL --format simple
+
+# 专业版详细分析
+python scripts/investment_advisor.py AAPL --format md
+
+# 数据集成
+python scripts/investment_advisor.py AAPL --format json
+```
+
+📖 **详见**: [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) 和 [scripts/IMPROVEMENT_GUIDE.md](scripts/IMPROVEMENT_GUIDE.md)
+
+---
+
 Global Market Intelligent Investment Analysis
 Core Principles
 Real-time + Accuracy First: All analysis must prioritize current data freshness and multi-source validation.
