@@ -19,8 +19,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 # Try to patch yfinance cache before importing
 try:
     import yfinance.cache
-    yfinance.cache.Cache.initialise = lambda self: None
-except ImportError:
+    if hasattr(yfinance.cache, 'Cache'):
+        yfinance.cache.Cache.initialise = lambda self: None
+except (ImportError, AttributeError):
     pass
 
 import yfinance as yf
